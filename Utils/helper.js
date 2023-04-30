@@ -1,25 +1,36 @@
+const { createPool } = require('mysql')
+
+const pool = createPool({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "blood",
+    connectionLimit: 10
+})
+
 module.exports = {
-    getPercentageData: (currentValue,previousValue) => {
-        return (((currentValue - previousValue)/previousValue)*100).toFixed(1)
+    totalPatients: async(req,res) => {
+        const sql = `SELECT count(*) as patient_count from user WHERE user_role = '2'`;
+        pool.query(sql,(err,result,field) => {
+            return result[0].patient_count
+        })
     },
-    isPercentage : (clicksPercentage) => {
-        return parseFloat(clicksPercentage) < parseFloat(0.0) ? false : true;
+    totalDonors: async(req,res) => {
+        const sql = `SELECT count(*) as donor_count from user WHERE user_role = '3'`;
+        pool.query(sql,(err,result,field) => {
+            return result[0].donor_count
+        })
     },
-    toAbsolute: (clicksPercentage) => {
-        return parseFloat(clicksPercentage) < parseFloat(0.0) ? clicksPercentage*-1 : clicksPercentage; 
+    totalRequest: async(req,res) => {
+        const sql = `SELECT count(*) as total_request FROM requests`;
+        pool.query(sql,(err,result,field) => {
+            return result[0].total_request
+        })
     },
-    formatNumber : (currency,status) => {
-        if(status)
-        {
-            const formatter = new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-              });
-              return formatter.format(currency);
-        }
-        else {
-            const formatter = new Intl.NumberFormat();
-            return formatter.format(currency);
-        }
+    totalEvents: async(req,res) => {
+        const sql = `SELECT count(*) as total_events FROM events`;
+        pool.query(sql,(err,result,field) => {
+            return result[0].total_events
+        })
     }
 }
