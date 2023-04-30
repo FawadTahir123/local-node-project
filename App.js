@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const authRoutes = require('./routes/auth');
+const apiRoutes = require('./routes/api');
 const app = express();
 
 const corsOptions = {
@@ -35,6 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 
 //auth routes
 app.use('/auth',authRoutes);
+app.use('/api',apiRoutes);
 
 
 // simple route
