@@ -6,7 +6,7 @@ const pool = createPool({
     password: "",
     database: "blood",
     connectionLimit: 10,
-    multipleStatements:true
+    multipleStatements: true
 })
 module.exports = {
     cardsData: async (req, res) => {
@@ -26,12 +26,11 @@ module.exports = {
             })
         })
     },
-    addUser: async(req,res) => {
+    addUser: async (req, res) => {
         const user_data = `SELECT * FROM user WHERE email = '${req.body.email}'`;
-        pool.query(user_data,(err,result,fields) => {
-            if(Object.keys(result).length>0)
-            {
-                return res.json({status:0,msg:"Email Already exist"});
+        pool.query(user_data, (err, result, fields) => {
+            if (Object.keys(result).length > 0) {
+                return res.json({ status: 0, msg: "Email Already exist" });
             }
             else {
 
@@ -42,21 +41,19 @@ module.exports = {
                 VALUES ('${req.body.firstName}','${req.body.lastName}','${req.body.cnic}','${req.body.phoneNo}','${req.body.age}',
                 '${req.body.blood}','${req.body.email}','${ciphertext}','${req.body.user_role}','${req.body.donor_status}','${req.body.address}',
                 '${req.body.gender}','')`;
-                pool.query(sql,(err,result,fields) => {
-                    if(err)
-                    {
-                        return res.json({status:1,msg:err})
+                pool.query(sql, (err, result, fields) => {
+                    if (err) {
+                        return res.json({ status: 1, msg: err })
                     }
                     else {
-                        return res.json({status:2,msg:'User registered successfully!!'})
+                        return res.json({ status: 2, msg: 'User registered successfully!!' })
                     }
                 })
             }
         })
     },
-
-    editUser: async(req,res) => {
-        const {id} = req.params;
+    editUser: async (req, res) => {
+        const { id } = req.params;
         console.log(id);
         console.log(req.body);
         const sql = `UPDATE user SET first_name = '${req.body.first_name}', last_name = '${req.body.last_name}',
@@ -64,76 +61,90 @@ module.exports = {
         user_role = '${req.body.user_role}', status = '${req.body.status}', address = '${req.body.address}', gender = '${req.body.gender}',
         availability = '' WHERE id = '${id}'`;
 
-        pool.query(sql,(err,result,fields) => {
-            if(err)
-            {
-                return res.json({status:1,msg:err});
+        pool.query(sql, (err, result, fields) => {
+            if (err) {
+                return res.json({ status: 1, msg: err });
             }
             else {
-                return res.json({status:2,msg:"User update successfully!!"});
+                return res.json({ status: 2, msg: "User update successfully!!" });
             }
         })
     },
-    deleteUser: async(req,res) => {
-        const {id} = req.params;
+    deleteUser: async (req, res) => {
+        const { id } = req.params;
         const sql = `DELETE FROM user where id = '${id}'`;
-        pool.query(sql,(err,result,fields)=>{
-            if(err)
-            {
-                return res.json({status:1,msg:err});
+        pool.query(sql, (err, result, fields) => {
+            if (err) {
+                return res.json({ status: 1, msg: err });
             }
             else {
-                return res.json({status:2,msg:"User deleted Successfully!!"});
+                return res.json({ status: 2, msg: "User deleted Successfully!!" });
             }
         })
     },
-    viewUser: async(req,res)=>{
-        const {id} = req.params;
+    viewUser: async (req, res) => {
+        const { id } = req.params;
         const sql = `SELECT * FROM user WHERE id = '${id}'`;
-        pool.query(sql,(err,result,fields)=>{
-            if(err)
-            {
-                return res.json({status:1,msg:err});
+        pool.query(sql, (err, result, fields) => {
+            if (err) {
+                return res.json({ status: 1, msg: err });
             }
-            else if(Object.keys(result).length>0)
-            {
-                return res.json({status:2,data:result})
+            else if (Object.keys(result).length > 0) {
+                return res.json({ status: 2, data: result })
             }
             else {
-                return res.json({status:1,msg:"No data found"})
+                return res.json({ status: 1, msg: "No data found" })
             }
         })
     },
-    getAllUser: async(req,res)=>{
-        const {page,limit} = req.query; 
+    getAllUser: async (req, res) => {
+        const { page, limit } = req.query;
         const sql2 = `SELECT count(*) as user_count FROM user`;
-        pool.query(sql2,(err,result,fields)=>{
-            const sql = `SELECT * FROM user Limit ${limit} offset ${(page-1)*limit}`;
+        pool.query(sql2, (err, result, fields) => {
+            const sql = `SELECT * FROM user Limit ${limit} offset ${(page - 1) * limit}`;
             const count = result[0].user_count;
-            pool.query(sql,(err,result,fields)=>{
-                if(err)
-                {
-                    return res.json({status:1,msg:err});
+            pool.query(sql, (err, result, fields) => {
+                if (err) {
+                    return res.json({ status: 1, msg: err });
                 }
-                else if(Object.keys(result).length>0)
-                {
-                    return res.json({status:2,count:count,data:result})
+                else if (Object.keys(result).length > 0) {
+                    return res.json({ status: 2, count: count, data: result })
                 }
                 else {
-                    return res.json({status:1,count:count,msg:"No data found"})
+                    return res.json({ status: 1, count: count, msg: "No data found" })
                 }
             })
         })
     },
-    bulkDeleteUser: async(req,res) => {
-        
-        const ids = "("+req.body.deleteData.toString()+")";
-        const sql = `Update user SET archive = 1 WHERE id IN ${ids}`;
-        pool.query(sql,(err,result,fields)=>{
-            if(err)
-                return res.json({status:1,msg:err});
+    bulkDeleteUser: async (req, res) => {
+        const ids = "(" + req.body.deleteData.toString() + ")";
+        const sql = `DELETE FROM user WHERE id IN ${ids}`;
+        pool.query(sql, (err, result, fields) => {
+            if (err)
+                return res.json({ status: 1, msg: err });
             else
-                return res.json({status:2,msg:"User deleted successfully!!"});
+                return res.json({ status: 2, msg: "User deleted successfully!!" });
+        })
+    },
+    searchUser: async (req, res) => {
+        const { page, limit } = req.query;
+        const sql = `SELECT count(*) as total_count FROM user WHERE first_name LIKE '%${req.body.keyword}%' OR last_name LIKE 
+        '%${req.body.keyword}%' OR cnic LIKE '%${req.body.keyword}%' OR phone_no LIKE '%${req.body.keyword}%' 
+        OR blood_group LIKE '%${req.body.keyword}%' OR email LIKE '%${req.body.keyword}%' OR address LIKE 
+        '%${req.body.keyword}%';SELECT * FROM user WHERE first_name LIKE '%${req.body.keyword}%' OR last_name LIKE 
+        '%${req.body.keyword}%' OR cnic LIKE '%${req.body.keyword}%' OR phone_no LIKE '%${req.body.keyword}%' 
+        OR blood_group LIKE '%${req.body.keyword}%' OR email LIKE '%${req.body.keyword}%' OR address LIKE 
+        '%${req.body.keyword}%' Limit ${limit} offset ${(page - 1) * limit}`;
+        pool.query(sql, (err, results, fields) => {
+            if (err) {
+                return res.json({ status: 1, msg: err });
+            }
+            else if (results[0][0].total_count > 0) {
+                return res.json({ status: 2, count: results[0][0].total_count, data: results[1] })
+            }
+            else {
+                return res.json({ status: 0, count: results[0][0].total_count, msg: "No data found" })
+            }
         })
     }
 }
