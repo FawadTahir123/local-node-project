@@ -128,7 +128,7 @@ module.exports = {
     },
     searchUser: async (req, res) => {
         const { page, limit } = req.query;
-        const sql = `SELECT count(*) as total_count FROM user WHERE first_name LIKE '%${req.body.keyword}%' OR last_name LIKE 
+        const sql = `SELECT count(*) as total_count FROM user WHERE first_name LIKE '%${req.body.keyword}%' AND last_name LIKE 
         '%${req.body.keyword}%' OR cnic LIKE '%${req.body.keyword}%' OR phone_no LIKE '%${req.body.keyword}%' 
         OR blood_group LIKE '%${req.body.keyword}%' OR email LIKE '%${req.body.keyword}%' OR address LIKE 
         '%${req.body.keyword}%';SELECT * FROM user WHERE first_name LIKE '%${req.body.keyword}%' OR last_name LIKE 
