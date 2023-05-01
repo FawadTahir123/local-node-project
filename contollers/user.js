@@ -71,12 +71,14 @@ module.exports = {
             }
         })
     },
+
     editUser: async(req,res) => {
         const {id} = req.params;
         console.log(id);
-        const sql = `UPDATE user SET first_name = '${req.body.firstName}', last_name = '${req.body.lastName}',
-        cnic = '${req.body.cnic}', phone_no = '${req.body.phoneNo}', age = '${req.body.age}',blood_group = '${req.body.blood}',
-        user_role = '${req.body.user_role}', status = '${req.body.donor_status}', address = '${req.body.address}', gender = '${req.body.gender}',
+        console.log(req.body);
+        const sql = `UPDATE user SET first_name = '${req.body.first_name}', last_name = '${req.body.last_name}',
+        cnic = '${req.body.cnic}', phone_no = '${req.body.phone_no}', age = '${req.body.age}',blood_group = '${req.body.blood_group}',
+        user_role = '${req.body.user_role}', status = '${req.body.status}', address = '${req.body.address}', gender = '${req.body.gender}',
         availability = '' WHERE id = '${id}'`;
 
         pool.query(sql,(err,result,fields) => {
@@ -120,7 +122,7 @@ module.exports = {
         })
     },
     getAllUser: async(req,res)=>{
-        const {page,limit} = req.query;
+        const {page,limit} = req.query; 
         const sql2 = `SELECT count(*) as user_count FROM user`;
         pool.query(sql2,(err,result,fields)=>{
             const sql = `SELECT * FROM user Limit ${limit} offset ${(page-1)*limit}`;
