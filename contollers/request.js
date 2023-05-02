@@ -5,7 +5,8 @@ const pool = createPool({
     user: "root",
     password: "",
     database: "blood",
-    connectionLimit: 10
+    connectionLimit: 10,
+    multipleStatements:true
 })
 module.exports = {
     requestBlood: async (req, res) => {
@@ -19,6 +20,128 @@ module.exports = {
             }
             else {
                 return res.json({ status: 2, msg: 'Request added successfully!!' });
+            }
+        })
+    },
+    addRequest: async(req,res) => {
+        const sql = `INSERT INTO requests (patient_id,unit,blood_group,required_date,status)
+        VALUES ('${req.body.patient_id}','${req.body.unit}','${req.body.blood_group}','${req.body.date}',
+        '${req.body.status}')`;
+
+        pool.query(sql,(err,results,fields)=>{
+            if(err)
+            {
+                return res.json({status:1,msg:err});
+            }
+            else {
+                return res.json({status:2,msg:"Request added successfully!!"});
+            }
+        })
+    },
+    editRequest: async(req,res) => {
+        const sql = `UPDATE requests SET unit = '${req.body.unit}', blood_group = '${req.body.blood_group}',
+        required_date = '${req.body.date}',status = '${req.body.status}'`;
+        pool.query(sql,(err,results,fields)=>{
+            if(err)
+            {
+                return res.json({status:1,msg:err});
+            }
+            else {
+                return res.json({status:2,msg:"Request update successfully!!"});
+            }
+        })
+    },
+    deleteRequest: async(req,res) => {
+        const {id} = req.params;
+        const sql = `DELETE FROM requests WHERE id = '${id}'`;
+        pool.query(sql,(err,results,fields)=>{
+            if(err)
+            {
+                return res.json({status:1,msg:err});
+            }
+            else {
+                return res.json({status:2,msg:"Request deleted Successfully!!"});
+            }
+        })
+    },
+    viewRequest:async(req,res) => {
+        const {id} = req.params;
+        const sql = `SELECT requests.*,user.first_name,user.last_name FROM user INNER JOIN requests
+        ON user.id = requests.patient_id WHERE requests.id = '${id}'`;
+        pool.query(sql,(err,results,fields)=>{
+            if(err)
+            {
+                return res.json({status:1,msg:err});
+            }
+            else if(Object.keys(results).length > 0)
+            {
+                return res.json({status:2,data:results});
+            }
+            else {
+                return res.json({status:2,msg:"No data found"});
+            }
+        })
+    },
+    getAllRequest: async(req,res) => {
+        const {page,limit} = req.query;
+        const sql = `SELECT count(*) as total_count FROM user INNER JOIN requests ON user.id = requests.patient_id;
+        SELECT requests.*,user.first_name,user.last_name FROM requests INNER JOIN user ON requests.patient_id = user.id  Limit ${limit} offset ${(page - 1) * limit};`;
+        pool.query(sql,[1,2],(err,results,fields)=>{
+            if(err)
+            {
+                return res.json({status:1,msg:err});
+            }
+            else if(results[0][0].total_count > 0)
+            {
+                return res.json({status:2,count:results[0][0].total_count,data:results[1]});
+            }
+            else {
+                return res.json({status:2,count:results[0][0].total_count,msg:"No data found"});
+            }
+        })
+    },
+    bulkDeleteRequest: async(req,res) => {
+        const ids = "(" + req.body.deleteData.toString() + ")";
+        const sql = `DELETE FROM requests WHERE id IN ${ids}`;
+        pool.query(sql, (err, result, fields) => {
+            if (err)
+                return res.json({ status: 1, msg: err });
+            else
+                return res.json({ status: 2, msg: "Request deleted successfully!!" });
+        })
+    },
+    searchRequest: async(req,res) => {
+        const { page, limit } = req.query;
+        const sql = `SELECT count(*) as total_count FROM user INNER JOIN
+        requests ON user.id = requests.patient_id WHERE user.first_name LIKE '%${req.body.keyword}%' OR 
+        user.last_name LIKE '%${req.body.keyword}%' OR requests.blood_group LIKE '%${req.body.keyword}%' OR 
+        requests.required_date LIKE '%${req.body.keyword}%' OR requests.status LIKE '%${req.body.keyword}%';SELECT user.first_name,user.last_name,requests.* FROM user INNER JOIN
+        requests ON user.id = requests.patient_id WHERE user.first_name LIKE '%${req.body.keyword}%' OR 
+        user.last_name LIKE '%${req.body.keyword}%' OR requests.blood_group LIKE '%${req.body.keyword}%' OR 
+        requests.required_date LIKE '%${req.body.keyword}%' OR requests.status LIKE '%${req.body.keyword}%'
+        Limit ${limit} offset ${(page - 1) * limit}`;
+        pool.query(sql, (err, results, fields) => {
+            if (err) {
+                return res.json({ status: 1, msg: err });
+            }
+            else if (results[0][0].total_count > 0) {
+                return res.json({ status: 2, count: results[0][0].total_count, data: results[1] })
+            }
+            else {
+                return res.json({ status: 0, count: results[0][0].total_count, msg: "No data found" })
+            }
+        })
+    },
+    approveRequest: async(req,res) => {
+        const {id} = req.params;
+        const sql = `UPDATE requests SET status = 'Approve' WHERE id = '${id}';`;
+        pool.query(sql,(err,results,fields)=>{
+            if(err)
+            {
+                return res.json({status:1,msg:err});
+            }
+            else {
+                return res.json({status:2,msg:"Request approve successfully!!"});
             }
         })
     }

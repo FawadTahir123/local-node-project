@@ -15,4 +15,14 @@ apiRoutes.get('/view-user/:id',User.viewUser);
 apiRoutes.get('/get-all-user',User.getAllUser);
 apiRoutes.post('/search-user',User.searchUser);
 //End User Controller
+apiRoutes.post('/add-request',Request.addRequest);
+apiRoutes.put('/edit-request/:id',Request.editRequest);
+apiRoutes.delete('/delete-request/:id',Request.deleteRequest);
+apiRoutes.delete('/bulk-delete-request',Request.bulkDeleteRequest);
+apiRoutes.get('/view-request/:id',Request.viewRequest);
+apiRoutes.get('/get-all-request',Request.getAllRequest);
+apiRoutes.post('/search-request',Request.searchRequest);
+apiRoutes.get('/approve-request/:id',Request.approveRequest);
+//Request Controller
+
 module.exports = apiRoutes;
