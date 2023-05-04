@@ -40,7 +40,7 @@ module.exports = {
                 (first_name,last_name,cnic,phone_no,age,blood_group,email,password,user_role,status,address,gender,availability) 
                 VALUES ('${req.body.firstName}','${req.body.lastName}','${req.body.cnic}','${req.body.phoneNo}','${req.body.age}',
                 '${req.body.blood}','${req.body.email}','${ciphertext}','${req.body.user_role}','${req.body.donor_status}','${req.body.address}',
-                '${req.body.gender}','')`;
+                '${req.body.gender}','${req.body.availability}')`;
                 pool.query(sql, (err, result, fields) => {
                     if (err) {
                         return res.json({ status: 1, msg: err })
@@ -57,7 +57,7 @@ module.exports = {
         const sql = `UPDATE user SET first_name = '${req.body.first_name}', last_name = '${req.body.last_name}',
         cnic = '${req.body.cnic}', phone_no = '${req.body.phone_no}', age = '${req.body.age}',blood_group = '${req.body.blood_group}',
         user_role = '${req.body.user_role}', status = '${req.body.status}', address = '${req.body.address}', gender = '${req.body.gender}',
-        availability = '' WHERE id = '${id}'`;
+        availability = '${req.body.availability}' WHERE id = '${id}'`;
 
         pool.query(sql, (err, result, fields) => {
             if (err) {
@@ -142,6 +142,19 @@ module.exports = {
             }
             else {
                 return res.json({ status: 0, count: results[0][0].total_count, msg: "No data found" })
+            }
+        })
+    },
+    updateAvailaibility: (req,res) => {
+        const {id} = req.params;
+        const sql = `UPDATE user SET availability = 'Available' WHERE id = ${id}`;
+        pool.query(sql,(err,results,fields)=>{
+            if(err)
+            {
+                return res.json({status:1,msg:err});
+            }
+            else {
+                return res.json({status:2,msg:"Availability update Successfully!!"});
             }
         })
     }

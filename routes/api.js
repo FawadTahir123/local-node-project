@@ -14,6 +14,7 @@ apiRoutes.delete('/bulk-delete-user',User.bulkDeleteUser);
 apiRoutes.get('/view-user/:id',User.viewUser);
 apiRoutes.get('/get-all-user',User.getAllUser);
 apiRoutes.post('/search-user',User.searchUser);
+apiRoutes.post('/update-availability/:id',User.updateAvailaibility);
 //End User Controller
 apiRoutes.post('/add-request',Request.addRequest);
 apiRoutes.put('/edit-request/:id',Request.editRequest);

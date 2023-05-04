@@ -25,7 +25,7 @@ module.exports = {
                 (first_name,last_name,cnic,phone_no,age,blood_group,email,password,user_role,status,address,gender,availability) 
                 VALUES ('${req.body.firstName}','${req.body.lastName}','${req.body.cnic}','${req.body.phoneNo}','${req.body.age}',
                 '${req.body.blood}','${req.body.email}','${ciphertext}','${req.body.user_role}','${req.body.donor_status}','${req.body.address}',
-                '${req.body.gender}','')`;
+                '${req.body.gender}','${req.body.availability}')`;
                 pool.query(sql,(err,result,fields) => {
                     if(err)
                     {
