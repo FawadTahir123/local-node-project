@@ -160,6 +160,7 @@ module.exports = {
     },
     updateStatus: async(req,res) => {
         const {id} = req.params;
+
         const sql = `UPDATE requests SET status = 'Approve' WHERE id = '${id}';`;
         pool.query(sql,(err,results,fields)=>{
             if(err)
@@ -168,6 +169,22 @@ module.exports = {
             }
             else {
                 return res.json({status:2,msg:"Request approve successfully!!"});
+            }
+        })
+    },
+    getUserAvailability: async(req,res) => {
+        const {id} = req.params;
+        const sql = `SELECT availability FROM user where id = '${id}'`;
+        pool.query(sql,(err,results,fields)=>{
+            if(err)
+            {
+                return res.json({status:1,msg:err});
+            }
+            else if(Object.keys(results).length>0){
+                return res.json({status:2,data:results});
+            }
+            else {
+                return res.json({status:0,msg:"No data Found"});
             }
         })
     }

@@ -16,6 +16,7 @@ apiRoutes.get('/get-all-user',User.getAllUser);
 apiRoutes.post('/search-user',User.searchUser);
 apiRoutes.post('/update-availability/:id',User.updateAvailaibility);
 apiRoutes.get('/update-status/:id',User.updateStatus);
+apiRoutes.get('/get-user-availability/:id',User.getUserAvailability);
 //End User Controller
 apiRoutes.post('/add-request',Request.addRequest);
 apiRoutes.put('/edit-request/:id',Request.editRequest);
