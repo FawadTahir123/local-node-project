@@ -15,6 +15,7 @@ apiRoutes.get('/view-user/:id',User.viewUser);
 apiRoutes.get('/get-all-user',User.getAllUser);
 apiRoutes.post('/search-user',User.searchUser);
 apiRoutes.post('/update-availability/:id',User.updateAvailaibility);
+apiRoutes.get('/update-status/:id',User.updateStatus);
 //End User Controller
 apiRoutes.post('/add-request',Request.addRequest);
 apiRoutes.put('/edit-request/:id',Request.editRequest);
@@ -24,6 +25,7 @@ apiRoutes.get('/view-request/:id',Request.viewRequest);
 apiRoutes.get('/get-all-request',Request.getAllRequest);
 apiRoutes.post('/search-request',Request.searchRequest);
 apiRoutes.get('/approve-request/:id',Request.approveRequest);
+apiRoutes.get('/patient-request/:id',Request.patientRequest);
 //Request Controller
 
 module.exports = apiRoutes;

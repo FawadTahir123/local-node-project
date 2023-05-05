@@ -147,7 +147,7 @@ module.exports = {
     },
     updateAvailaibility: (req,res) => {
         const {id} = req.params;
-        const sql = `UPDATE user SET availability = 'Available' WHERE id = ${id}`;
+        const sql = `UPDATE user SET availability = '${req.body.availability}' WHERE id = ${id}`;
         pool.query(sql,(err,results,fields)=>{
             if(err)
             {
@@ -155,6 +155,19 @@ module.exports = {
             }
             else {
                 return res.json({status:2,msg:"Availability update Successfully!!"});
+            }
+        })
+    },
+    updateStatus: async(req,res) => {
+        const {id} = req.params;
+        const sql = `UPDATE requests SET status = 'Approve' WHERE id = '${id}';`;
+        pool.query(sql,(err,results,fields)=>{
+            if(err)
+            {
+                return res.json({status:1,msg:err});
+            }
+            else {
+                return res.json({status:2,msg:"Request approve successfully!!"});
             }
         })
     }
