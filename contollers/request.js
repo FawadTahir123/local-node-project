@@ -135,7 +135,6 @@ module.exports = {
     approveRequest: async(req,res) => {
         const {id} = req.params;
         pool.query(`SELECT * FROM requests WHERE id = '${id}'`,(err,results,fields)=>{
-            console.log(results);
             pool.query(`SELECT * FROM user WHERE blood_group = '${results[0].blood_group}' AND user_role = 2
             AND availability = 'Available' LIMIT ${results[0].unit}`,(err,results,fields)=>{
                 if(err)
@@ -147,9 +146,8 @@ module.exports = {
                     let date = new Date().toJSON().slice(0, 10);
                     results.map((val) => {
                         const sql = `INSERT INTO events (patient_id,donor_id,donation_date,donation_time,status,blood_unit)
-                        VALUES ('${id}', '${val?.id}','${date}','02:00 PM','Pending','1')`;
+                        VALUES ('${id}', '${val?.id}','${val?.required_date}','02:00 PM','Pending','1')`;
                         var x = pool.query(sql);
-                        console.log(x);
                     })
                     return res.json({status:2,msg:"Request Approve successfully!!"});
                 }

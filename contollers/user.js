@@ -151,6 +151,44 @@ module.exports = {
         pool.query(sql,(err,results,fields)=>{
             if(err)
             {
+                if(req.body.availability==="available")
+                {
+                    let date = new Date().toJSON().slice(0, 10);
+                    const sql = `SELECT * FROM user WHERE id = '${id}'`;
+                    pool.query(sql,(err,results,fields)=>{
+                        if(err){
+                            return res.json({status:1,msg:err});
+                        }
+                        else {
+                            const sql = `SELECT * FROM requests WHERE required_date > '${date}' AND blood_group = '${results[0].blood_group}'
+                            `;
+                            pool.query(sql,(err,results,fields)=>{
+                                if(err)
+                                {
+                                    return res.json({status:1,msg:err});
+                                }
+                                else if(Object.keys(results).length > 0)
+                                {
+                                    const sql = `INSERT INTO events (patient_id,donor_id,donation_date,donation_time,status,blood_unit)
+                                    VALUES ('${results[0].patient_id}', '${id}','${results[0].required_date}','02:00 PM','Pending','1')`;
+                                    pool.query(sql,(err,results,fields)=>{
+                                        if(err)
+                                        {
+                                            return res.json({status:1,msg:err});
+                                        }
+                                        else {
+                                            return res.json({status:2,msg:"Availability update successfully!!"});
+                                        }
+                                    });
+                                    
+                                }
+                                else {
+                                    return res.json({status:0,msg:"No data Found"});
+                                }
+                            })
+                        }
+                    })
+                }
                 return res.json({status:1,msg:err});
             }
             else {
