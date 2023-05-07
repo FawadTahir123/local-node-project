@@ -151,7 +151,7 @@ module.exports = {
         pool.query(sql,(err,results,fields)=>{
             if(err)
             {
-                if(req.body.availability==="available")
+                if(req.body.availability==="Available")
                 {
                     let date = new Date().toJSON().slice(0, 10);
                     const sql = `SELECT * FROM user WHERE id = '${id}'`;
