@@ -140,29 +140,31 @@ module.exports = {
             {
                 return res.json({status:1,msg:err});
             }
-            pool.query(`SELECT * FROM requests WHERE id = '${id}'`,(err,results,fields)=>{
-                pool.query(`SELECT * FROM user WHERE blood_group = '${results[0].blood_group}' AND user_role = 2
-                AND availability = 'Available' LIMIT ${results[0].unit}`,(err,results,fields)=>{
-                    if(err)
-                    {
-                        console.log(err);
-                        return res.json({status:1,msg:err});
-                    }
-                    else if(Object.keys(results).length>0)
-                    {
-                        let date = new Date().toJSON().slice(0, 10);
-                        results.map((val) => {
-                            const sql = `INSERT INTO events (patient_id,donor_id,donation_date,donation_time,status,blood_unit)
-                            VALUES ('${id}', '${val?.id}','${val?.required_date}','02:00 PM','Pending','1')`;
-                            var x = pool.query(sql);
-                        })
-                        return res.json({status:2,msg:"Request Approve successfully!!"});
-                    }
-                    else {
-                        return res.json({status:0,msg:"No Donor Available Yet!!"});
-                    }
-                })
-            });
+            else {
+                pool.query(`SELECT * FROM requests WHERE id = '${id}'`,(err,results,fields)=>{
+                    pool.query(`SELECT * FROM user WHERE blood_group = '${results[0].blood_group}' AND user_role = 3
+                    AND availability = 'Available' LIMIT ${results[0].unit}`,(err,results,fields)=>{
+                        if(err)
+                        {
+                            console.log(err);
+                            return res.json({status:1,msg:err});
+                        }
+                        else if(Object.keys(results).length>0)
+                        {
+                            let date = new Date().toJSON().slice(0, 10);
+                            results.map((val) => {
+                                const sql = `INSERT INTO events (patient_id,donor_id,donation_date,donation_time,status,blood_unit)
+                                VALUES ('${id}', '${val?.id}','${val?.required_date}','02:00 PM','Pending','1')`;
+                                var x = pool.query(sql);
+                            })
+                            return res.json({status:2,msg:"Request Approve successfully!!"});
+                        }
+                        else {
+                            return res.json({status:0,msg:"No Donor Available Yet!!"});
+                        }
+                    })
+                });
+            }
         })
     },
     patientRequest: async(req,res) => {
