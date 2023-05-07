@@ -151,9 +151,13 @@ module.exports = {
         pool.query(sql,(err,results,fields)=>{
             if(err)
             {
+                return res.json({status:1,msg:err});
+            }
+            else {
                 if(req.body.availability==="Available")
                 {
                     let date = new Date().toJSON().slice(0, 10);
+                    console.log(date);
                     const sql = `SELECT * FROM user WHERE id = '${id}'`;
                     pool.query(sql,(err,results,fields)=>{
                         if(err){
@@ -189,9 +193,6 @@ module.exports = {
                         }
                     })
                 }
-                return res.json({status:1,msg:err});
-            }
-            else {
                 return res.json({status:2,msg:"Availability update Successfully!!"});
             }
         })
