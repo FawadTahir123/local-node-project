@@ -154,7 +154,8 @@ module.exports = {
                             let date = new Date().toJSON().slice(0, 10);
                             results.map((val) => {
                                 const sql = `INSERT INTO events (patient_id,donor_id,donation_date,donation_time,status,blood_unit)
-                                VALUES ('${id}', '${val?.id}','${val?.required_date}','02:00 PM','Pending','1')`;
+                                VALUES ('${id}', '${val?.id}','${val?.required_date}','02:00 PM','Pending','1');
+                                UPDATE user SET availability = 'not_available' WHERE id = ${val?.id}`;
                                 var x = pool.query(sql);
                             })
                             return res.json({status:2,msg:"Request Approve successfully!!"});

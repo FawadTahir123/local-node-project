@@ -2,6 +2,7 @@ const apiRoutes = require('express').Router();
 const {Api} = require('../contollers');
 const {User} = require('../contollers');
 const {Request} = require('../contollers')
+const {Events} = require('../contollers')
 
 
 apiRoutes.post('/request-blood/:id',Request.requestBlood);
@@ -18,6 +19,8 @@ apiRoutes.post('/update-availability/:id',User.updateAvailaibility);
 apiRoutes.get('/update-status/:id',User.updateStatus);
 apiRoutes.get('/get-user-availability/:id',User.getUserAvailability);
 //End User Controller
+
+//Request Controller
 apiRoutes.post('/add-request',Request.addRequest);
 apiRoutes.put('/edit-request/:id',Request.editRequest);
 apiRoutes.delete('/delete-request/:id',Request.deleteRequest);
@@ -28,5 +31,10 @@ apiRoutes.post('/search-request',Request.searchRequest);
 apiRoutes.post('/approve-request/:id',Request.approveRequest);
 apiRoutes.get('/patient-request/:id',Request.patientRequest);
 //Request Controller
+
+//Events Controller
+apiRoutes.get('/patinet-events/:id',Events.patientEvents);
+apiRoutes.get('/donor-events/:id',Events.donorEvents);
+//Events Controller Ends
 
 module.exports = apiRoutes;
