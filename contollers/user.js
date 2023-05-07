@@ -168,29 +168,21 @@ module.exports = {
                             pool.query(sql,(err,results,fields)=>{
                                 if(err)
                                 {
+                                    console.log(results[0].required_date,'error');
                                     return res.json({status:1,msg:err});
                                 }
                                 else if(Object.keys(results).length > 0)
                                 {
                                     const sql = `INSERT INTO events (patient_id,donor_id,donation_date,donation_time,status,blood_unit)
-                                    VALUES ('${results[0].patient_id}', '${id}','${results[0].required_date}','02:00 PM','Pending','1')`;
+                                    VALUES ('${results[0].patient_id}', '${id}','${results[0].required_date}','02:00 PM','Pending','1');
+                                    UPDATE user SET availability = 'not_available' WHERE id = ${id}`;
                                     pool.query(sql,(err,results,fields)=>{
                                         if(err)
                                         {
                                             return res.json({status:1,msg:err});
                                         }
                                         else {
-                                            const sql = `UPDATE user SET availability = 'not_available' WHERE id = ${id}`;
-                                                pool.query(sql,(err,results,fields)=>{
-                                                if(err)
-                                                {
-                                                    return res.json({status:1,msg:err});
-                                                }
-                                                else {
-                                                    return res.json({status:2,msg:"Event generated against your availability"});
-                                                }
-                                            })
-                                            return res.json({status:2,msg:"Event generated against your availability"});
+                                            return res.json({status:2,msg:"Event generated against your Availability"});
                                         }
                                     });
                                 }
@@ -201,7 +193,9 @@ module.exports = {
                         }
                     })
                 }
-                return res.json({status:2,msg:"Availability update Successfully!!"});
+                else {
+                    return res.json({status:2,msg:"Availability update Successfully!!"});
+                }
             }
         })
     },
