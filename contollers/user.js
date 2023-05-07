@@ -181,9 +181,9 @@ module.exports = {
                                             return res.json({status:1,msg:err});
                                         }
                                         else {
-                                            if(req.body.availability==="Available not_available")
+                                            if(req.body.availability==="Available")
                                             {
-                                                const sql = `UPDATE user SET availability = '${req.body.availability}' WHERE id = ${id}`;
+                                                const sql = `UPDATE user SET availability = 'not_available' WHERE id = ${id}`;
                                                 pool.query(sql,(err,results,fields)=>{
                                                     if(err)
                                                     {
