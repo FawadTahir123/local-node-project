@@ -161,7 +161,7 @@ module.exports = {
                         }
                         else {
                             const sql = `SELECT * FROM requests WHERE required_date > '${date}' AND blood_group = '${results[0].blood_group}'
-                            AND status = 'Approve'`;
+                            AND status = 'approve'`;
                             pool.query(sql,(err,results,fields)=>{
                                 if(err)
                                 {
