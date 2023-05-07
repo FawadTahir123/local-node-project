@@ -181,13 +181,26 @@ module.exports = {
                                             return res.json({status:1,msg:err});
                                         }
                                         else {
-                                            return res.json({status:2,msg:"Availability update successfully!!"});
+                                            if(req.body.availability==="Available not_available")
+                                            {
+                                                const sql = `UPDATE user SET availability = '${req.body.availability}' WHERE id = ${id}`;
+                                                pool.query(sql,(err,results,fields)=>{
+                                                    if(err)
+                                                    {
+                                                        return res.json({status:1,msg:err});
+                                                    }
+                                                    else {
+                                                        return res.json({status:2,msg:"Event generated against your availability"});
+                                                    }
+                                                })
+                                            }
+                                            return res.json({status:2,msg:"Event generated against your availability"});
                                         }
                                     });
                                     
                                 }
                                 else {
-                                    return res.json({status:0,msg:"No data Found"});
+                                    return res.json({status:2,msg:"Availability update successfully!!"});
                                 }
                             })
                         }
