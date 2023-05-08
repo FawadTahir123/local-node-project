@@ -12,7 +12,7 @@ module.exports = {
     patientEvents: async(req,res)=>{
         const {id} = req.params;
         const sql = `SELECT events.donor_id,events.status as event_status,events.donation_date,events.blood_unit,user.* 
-        FROM events INNER JOIN user ON events.donor_id = user.id WHERE events.donor_id = ${id}`;
+        FROM events INNER JOIN user ON events.donor_id = user.id WHERE events.patient_id = ${id}`;
         pool.query(sql,(err,results,fields)=>{
             if(err)
             {
