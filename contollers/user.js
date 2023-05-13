@@ -167,20 +167,36 @@ module.exports = {
                             pool.query(sql,(err,results,fields)=>{
                                 if(err)
                                 {
-                                    console.log(results[0].required_date,'error');
                                     return res.json({status:1,msg:err});
                                 }
                                 else if(Object.keys(results).length > 0)
                                 {
+                                    const unit = results[0].required_date;
+                                    const remaning_unit = results[0].remaning_unit;
+                                    const request_id = results[0].id;
                                     const sql = `INSERT INTO events (patient_id,donor_id,donation_date,donation_time,status,blood_unit)
                                     VALUES ('${results[0].patient_id}', '${id}','${results[0].required_date}','02:00 PM','Pending','1');
                                     UPDATE user SET availability = 'not_available' WHERE id = ${id}`;
-                                    pool.query(sql,(err,results,fields)=>{
+                                    pool.query(sql,(err,results,fields,unit,request_id,remaning_unit)=>{
                                         if(err)
                                         {
                                             return res.json({status:1,msg:err});
                                         }
                                         else {
+                                            if(parseInt(unit)>0)
+                                            {
+                                                const new_unit = remaning_unit===null ? unit-1 : remaning_unit-1;
+                                                const sql = `UPDATE requests SET remaning_unit = ${new_unit} WHERE id = ${request_id}`;
+                                                pool.query(sql,(err,results,fields)=>{
+                                                    if(err)
+                                                    {
+                                                        return res.json({status:1,msg:err});
+                                                    }
+                                                    else {
+                                                        return res.json({status:2,msg:"Event generated against your Availability and unit updates Successfully"});
+                                                    }
+                                                })
+                                            }
                                             return res.json({status:2,msg:"Event generated against your Availability"});
                                         }
                                     });
