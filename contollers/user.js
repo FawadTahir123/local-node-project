@@ -27,6 +27,7 @@ module.exports = {
         })
     },
     addUser: async (req, res) => {
+        console.log(req.body);
         const user_data = `SELECT * FROM user WHERE email = '${req.body.email}'`;
         pool.query(user_data, (err, result, fields) => {
             if (Object.keys(result).length > 0) {
@@ -34,12 +35,10 @@ module.exports = {
             }
             else {
 
-                var ciphertext = CryptoJS.AES.encrypt(req.body.password, 'jkhkefheuf398rubjkvebkeejvn').toString();
-
                 const sql = `INSERT INTO user 
-                (first_name,last_name,cnic,phone_no,age,blood_group,email,password,user_role,status,address,gender,availability) 
-                VALUES ('${req.body.firstName}','${req.body.lastName}','${req.body.cnic}','${req.body.phoneNo}','${req.body.age}',
-                '${req.body.blood}','${req.body.email}','${ciphertext}','${req.body.user_role}','${req.body.donor_status}','${req.body.address}',
+                (first_name,last_name,cnic,phone_no,age,blood_group,email,password,user_role,account_status,address,gender,availability) 
+                VALUES ('${req.body.first_name}','${req.body.last_name}','${req.body.cnic}','${req.body.phone_no}','${req.body.age}',
+                '${req.body.blood_group}','${req.body.email}','','${req.body.user_role}','${req.body.account_status}','${req.body.address}',
                 '${req.body.gender}','${req.body.availability}')`;
                 pool.query(sql, (err, result, fields) => {
                     if (err) {
@@ -244,5 +243,24 @@ module.exports = {
                 return res.json({status:0,msg:"No data Found"});
             }
         })
-    }
+    },
+
+    getAllPatients: async (req, res) => {
+        const sql2 = `SELECT count(*) as user_count FROM user WHERE user_role = 2`;
+        pool.query(sql2, (err, result, fields) => {
+            const sql = `SELECT * FROM user WHERE user_role = 2`;
+            const count = result[0].user_count;
+            pool.query(sql, (err, result, fields) => {
+                if (err) {
+                    return res.json({ status: 1, msg: err });
+                }
+                else if (Object.keys(result).length > 0) {
+                    return res.json({ status: 2, count: count, data: result })
+                }
+                else {
+                    return res.json({ status: 1, count: count, msg: "No data found" })
+                }
+            })
+        })
+    },
 }

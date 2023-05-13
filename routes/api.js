@@ -9,6 +9,7 @@ apiRoutes.post('/request-blood/:id',Request.requestBlood);
 //User Controller
 apiRoutes.get('/get-cards-data',User.cardsData);
 apiRoutes.post('/add-user',User.addUser);
+apiRoutes.get('/get-all-patients',User.getAllPatients);
 apiRoutes.put('/edit-user/:id',User.editUser);
 apiRoutes.delete('/delete-user/:id',User.deleteUser);
 apiRoutes.delete('/bulk-delete-user',User.bulkDeleteUser);
