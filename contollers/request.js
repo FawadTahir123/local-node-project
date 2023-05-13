@@ -25,8 +25,8 @@ module.exports = {
     },
     addRequest: async(req,res) => {
         const sql = `INSERT INTO requests (patient_id,unit,blood_group,required_date,status)
-        VALUES ('${req.body.patient_id}','${req.body.unit}','${req.body.blood_group}','${req.body.date}',
-        '${req.body.status}')`;
+        VALUES ('${req.body.id}','${req.body.unit}','${req.body.blood_group}','${req.body.required_date}',
+        'approve')`;
 
         pool.query(sql,(err,results,fields)=>{
             if(err)
