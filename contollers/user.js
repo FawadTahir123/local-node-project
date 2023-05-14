@@ -55,7 +55,7 @@ module.exports = {
         const { id } = req.params;
         const sql = `UPDATE user SET first_name = '${req.body.first_name}', last_name = '${req.body.last_name}',
         cnic = '${req.body.cnic}', phone_no = '${req.body.phone_no}', age = '${req.body.age}',blood_group = '${req.body.blood_group}',
-        user_role = '${req.body.user_role}', status = '${req.body.status}', address = '${req.body.address}', gender = '${req.body.gender}',
+        user_role = '${req.body.user_role}', account_status = '${req.body.account_status}', address = '${req.body.address}', gender = '${req.body.gender}',
         availability = '${req.body.availability}' WHERE id = '${id}'`;
 
         pool.query(sql, (err, result, fields) => {

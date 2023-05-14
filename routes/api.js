@@ -29,7 +29,7 @@ apiRoutes.delete('/bulk-delete-request',Request.bulkDeleteRequest);
 apiRoutes.get('/view-request/:id',Request.viewRequest);
 apiRoutes.get('/get-all-request',Request.getAllRequest);
 apiRoutes.post('/search-request',Request.searchRequest);
-apiRoutes.post('/approve-request/:id',Request.approveRequest);
+apiRoutes.post('/approve-request',Request.approveRequest);
 apiRoutes.get('/patient-request/:id',Request.patientRequest);
 //Request Controller
 
