@@ -46,8 +46,8 @@ module.exports = {
         })
     },
     getAllEvents:async(req,res) => {
-        const sql = `SELECT events.*,user.first_name,user.last_name,user.status as user_status FROM events INNER JOIN user 
-        ON events.patient_id = user.id;SELECT events.*,user.first_name,user.last_name,user.status as user_status FROM events
+        const sql = `SELECT events.*,user.first_name,user.last_name,user.account_status as user_status FROM events INNER JOIN user 
+        ON events.patient_id = user.id;SELECT events.*,user.first_name,user.last_name,user.account_status as user_status, user.blood_group FROM events
         INNER JOIN user ON events.donor_id = user.id;`
         pool.query(sql,(err,results,fields)=>{
             if(err)
