@@ -144,12 +144,13 @@ module.exports = {
                         else if (Object.keys(results).length > 0) {
                             let rem_unit = results[0][0].remaning_unit;
                             let req_id = results[0][0].patient_id
+                            let request_id = results[0][0].id
                             let date = new Date().toJSON().slice(0, 10);
                             results[1].map((val) => {
                                 const sql = `INSERT INTO events (patient_id,donor_id,donation_date,donation_time,status,blood_unit)
                                         VALUES ('${id}', '${val?.id}','${val?.required_date}','02:00 PM','Pending','1');
                                         UPDATE user SET availability = 'not_available' WHERE id = ${val?.id};
-                                        UPDATE requests SET remaning_unit = ${rem_unit - 1} WHERE id = ${req_id}`;
+                                        UPDATE requests SET remaning_unit = ${rem_unit - 1} WHERE id = ${request_id}`;
                                 rem_unit = rem_unit - 1;
                                 var x = pool.query(sql);
                             })
