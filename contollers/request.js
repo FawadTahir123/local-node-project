@@ -148,7 +148,7 @@ module.exports = {
                             let date = new Date().toJSON().slice(0, 10);
                             results[1].map((val) => {
                                 const sql = `INSERT INTO events (patient_id,donor_id,donation_date,donation_time,status,blood_unit)
-                                        VALUES ('${id}', '${val?.id}','${val?.required_date}','02:00 PM','Pending','1');
+                                        VALUES ('${id}', '${val?.id}','${results[0][0].required_date}','02:00 PM','Pending','1');
                                         UPDATE user SET availability = 'not_available' WHERE id = ${val?.id};
                                         UPDATE requests SET remaning_unit = ${rem_unit - 1} WHERE id = ${request_id}`;
                                 rem_unit = rem_unit - 1;
