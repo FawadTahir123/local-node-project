@@ -166,7 +166,7 @@ module.exports = {
                                 rem_unit = rem_unit - 1;
                                 var x = pool.query(sql);
                             })
-                            return res.json({status:2,msg:"Request Approve successfully!!"});
+                            return res.json({status:2,msg:"Event Generate Successfully"});
                         }
                         else {
                             return res.json({status:0,msg:"No Donor Available Yet!!"});
