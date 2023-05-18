@@ -218,14 +218,13 @@ module.exports = {
     PatientRequests: async(req,res) => {
 
         const sql = `SELECT requests.*,user.first_name,user.last_name FROM requests INNER JOIN user 
-        ON requests.patient_id = user.id WHERE requests.blood_group = '${req.body.blood_group}';`;
+        ON requests.patient_id = user.id WHERE requests.blood_group = '${req.body.blood_group}' AND requests.remaning_unit > 0;`;
         pool.query(sql,(err,results,fields)=>{
             if(err)
             {
                 return res.json({status:1,msg:err});
             }
             else {
-                console.log(results);
                 return res.json({status:2,msg:"Result Found", data:results});
             }
         })
