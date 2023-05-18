@@ -17,8 +17,11 @@ apiRoutes.get('/view-user/:id',User.viewUser);
 apiRoutes.get('/get-all-user',User.getAllUser);
 apiRoutes.post('/search-user',User.searchUser);
 apiRoutes.post('/update-availability/:id',User.updateAvailaibility);
+apiRoutes.post('/patient-request-for-donor',User.PatientRequests);
 apiRoutes.get('/update-status/:id',User.updateStatus);
 apiRoutes.get('/get-user-availability/:id',User.getUserAvailability);
+apiRoutes.get('/get-donor-bloodgroup/:id',User.getBloodGroup);
+apiRoutes.get('/get-single-request-data/:id',User.getSingleRequestData);
 //End User Controller
 
 //Request Controller
