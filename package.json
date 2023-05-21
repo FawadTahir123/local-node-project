@@ -17,6 +17,8 @@
     "g": "^2.0.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
+    "node-cron": "^3.0.2",
+    "nodemailer": "^6.9.2",
     "nodemon": "^2.0.20",
     "ronin-mocks": "^0.1.11",
     "ronin-server": "^0.1.3",

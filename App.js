@@ -2,11 +2,15 @@ const express = require("express");
 const cors = require("cors");
 const authRoutes = require('./routes/auth');
 const apiRoutes = require('./routes/api');
+const cron = require('node-cron');
+const nodemailer = require('nodemailer');
 const app = express();
+const { getEmails } = require('./index')
 
 const corsOptions = {
   origin: process.env.ORIGIN
 };
+
 
 app.use(function (req, res, next) {
   // Website you wish to allow to connect
@@ -34,6 +38,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
+
 //auth routes
 app.use('/auth',authRoutes);
 app.use('/api',apiRoutes);
@@ -43,6 +48,11 @@ app.use('/api',apiRoutes);
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to node application." });
 });
+
+// cron jobs 
+
+cron.schedule('*/30 * * * * *',   
+  getEmails);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;
