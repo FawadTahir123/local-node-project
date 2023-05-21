@@ -38,8 +38,11 @@ module.exports = {
         })
     },
     editRequest: async (req, res) => {
+        console.log(req.body);
+        const { id } = req.params;
+        console.log(id);
         const sql = `UPDATE requests SET unit = '${req.body.unit}', blood_group = '${req.body.blood_group}',
-        required_date = '${req.body.date}',status = '${req.body.status}'`;
+        required_date = '${req.body.date}',status = '${req.body.status}' WHERE id = '${id}'`;
         pool.query(sql, (err, results, fields) => {
             if (err) {
                 return res.json({ status: 1, msg: err });
