@@ -64,7 +64,7 @@ module.exports = {
                     else{
                         // console.log(results);
                         remaining_unit = results[0].remaning_unit
-                        const sql = `UPDATE requests SET remaning_unit = ${remaining_unit-1} WHERE id = '${results[0].id}';
+                        const sql = `UPDATE requests SET remaning_unit = ${remaining_unit-1} AND status = 'IN-PROGRESS' WHERE id = '${results[0].id}';
                         SELECT id ,remaning_unit FROM requests WHERE id = '${results[0].id}'`;
                         pool.query(sql,(err,results,fields)=>{
                             if(err) 
