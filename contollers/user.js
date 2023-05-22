@@ -257,7 +257,7 @@ module.exports = {
     },
     getUserAvailability: async(req,res) => {
         const {id} = req.params;
-        const sql = `SELECT availability FROM user where id = '${id}'`;
+        const sql = `SELECT * FROM events where donor_id = '${id}'`;
         pool.query(sql,(err,results,fields)=>{
             if(err)
             {

@@ -26,7 +26,7 @@ module.exports = {
     addRequest: async (req, res) => {
         const sql = `INSERT INTO requests (patient_id,unit,blood_group,required_date,status)
         VALUES ('${req.body.id}','${req.body.unit}','${req.body.blood_group}','${req.body.required_date}',
-        'approve')`;
+        'PENDING')`;
 
         pool.query(sql, (err, results, fields) => {
             if (err) {
@@ -132,7 +132,7 @@ module.exports = {
         const { id } = req.body;
         const sql = `INSERT INTO requests (patient_id,unit,remaning_unit,blood_group,required_date,status)
         VALUES ('${req.body.id}','${req.body.unit}','${req.body.unit}','${req.body.blood_group}','${req.body.required_date}',
-        'approve')`;
+        'PENDING')`;
         pool.query(sql, (err, results, fields) => {
             if (err) {
                 return res.json({ status: 1, msg: err });

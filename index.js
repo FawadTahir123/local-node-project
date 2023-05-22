@@ -17,27 +17,28 @@ module.exports = {
     const sql = `SELECT  user.email FROM events INNER JOIN user ON events.donor_id = user.id WHERE ABS(DATEDIFF(donation_date, '${date}')) = 2 OR DATEDIFF('${date}', donation_date) = 2`;
     pool.query(sql, (err, result, fields) => {
       if (err) {
-        console.log("====================================");
         console.log(err);
-        console.log("====================================");
       } else {
+        
         result.forEach((element) => {
+          console.log(element.email);
           var transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            service: "gmail",
+            host: 'smtp.gmail.com',//process.env.EMAIL_HOST,
+            service:'gmail', //process.env.SERVICE,
             port: 587,
             secure: false,
             requireTLS: true,
 
             auth: {
-              user: "fawadtahir.te@gmail.com",
-              pass: "pjduwuohnnvbmnyp",
+              user:'fawadtahir.te@gmail.com', //process.env.EMAIL_USER,
+              pass: 'pjduwuohnnvbmnyp', //process.env.EMAIL_PASS,
             },
           });
           const mailOptions = {
-            from: "fawadtahir.te@gmail.com", // sender address
+            from: 'fawadtahir.te@gmail.com',//process.env.EMAIL_USER, // sender address
             to: element.email, // reciever address
             subject: "Donation Reminder",
+            html: '<p>hi your meeting in just 15 min</p>'
           };
           transporter.sendMail(mailOptions, function (err, info) {
             if (err) console.log(err);

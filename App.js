@@ -3,6 +3,7 @@ const cors = require("cors");
 const authRoutes = require('./routes/auth');
 const apiRoutes = require('./routes/api');
 const cron = require('node-cron');
+require('dotenv').config();
 const nodemailer = require('nodemailer');
 const app = express();
 const { getEmails } = require('./index')
@@ -51,8 +52,8 @@ app.get("/", (req, res) => {
 
 // cron jobs 
 
-cron.schedule('*/30 * * * * *',   
-  getEmails);
+// cron.schedule('*/30 * * * * *',   
+//   getEmails);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;
