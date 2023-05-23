@@ -64,7 +64,8 @@ module.exports = {
                     else{
                         // console.log(results);
                         remaining_unit = results[0].remaning_unit
-                        const sql = `UPDATE requests SET remaning_unit = ${remaining_unit-1} AND status = 'IN-PROGRESS' WHERE id = '${results[0].id}';
+                        console.log(remaining_unit,"hello");
+                        const sql = `UPDATE requests SET remaning_unit = ${remaining_unit-1}, status = 'IN-PROGRESS' WHERE id = '${results[0].id}';
                         SELECT id ,remaning_unit FROM requests WHERE id = '${results[0].id}'`;
                         pool.query(sql,(err,results,fields)=>{
                             if(err) 
@@ -102,17 +103,21 @@ module.exports = {
             }
         })
     },
+
     getAllEvents:async(req,res) => {
+        const {page, limit}= req.query
         const sql = `SELECT events.*,user.first_name,user.last_name,user.account_status as user_status FROM events INNER JOIN user 
         ON events.patient_id = user.id;SELECT events.*,user.first_name,user.last_name,user.account_status as user_status, user.blood_group FROM events
-        INNER JOIN user ON events.donor_id = user.id;`
+        INNER JOIN user ON events.donor_id = user.id LIMIT ${limit} offset ${(page - 1) * limit};
+        SELECT count(*) as count FROM events`
         pool.query(sql,(err,results,fields)=>{
             if(err)
             {
                 return res.json({status:1,msg:err})
             }
             else if(Object.keys(results).length>0){
-                return res.json({status:2,data:[results[0],results[1]]});
+                console.log(results);
+                return res.json({status:2,data:[results[0],results[1],results[2]]});
             }
             else {
                 return res.json({status:0,msg:"No data Found"});
